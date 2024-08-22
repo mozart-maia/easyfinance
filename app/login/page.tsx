@@ -49,7 +49,7 @@ export default function Login() {
           </div>
           <div id="buttonentrar" className="mt-5">
             <Link href="/">
-              <button className="bg-blue-500 w-[95%] xl:w-[75%] h-12 rounded-md text-white font-bold  hover:bg-blue-400"> Entrar</button>
+              <button className="bg-blue-500 w-[95%] xl:w-[95%] 2xl:w-[75%] h-12 rounded-md text-white font-bold  hover:bg-blue-400"> Entrar</button>
             </Link>
           </div>
           
@@ -64,13 +64,13 @@ export default function Login() {
 
         <div id="logingoogle" className="mt-5">
           <Link href="/">
-              <button className="bg-slate-100 w-[95%] xl:w-[75%]  h-12 rounded-md border border-blue-300 text-black font-bold hover:bg-slate-300"> Entrar com o Google</button>
+              <button className="bg-slate-100 w-[95%] xl:w-[95%] 2xl:w-[75%] h-12 rounded-md border border-blue-300 text-black font-bold hover:bg-slate-300"> Entrar com o Google</button>
           </Link>
         </div>
 
           <div id="loginapple" className="mt-5">
             <Link href="/">
-              <button className="bg-slate-100 w-[95%] xl:w-[75%] h-12 rounded-md border border-blue-300 text-black font-bold  hover:bg-slate-300"> Entrar com o Apple ID</button>
+              <button className="bg-slate-100 w-[95%] xl:w-[95%] 2xl:w-[75%] h-12 rounded-md border border-blue-300 text-black font-bold  hover:bg-slate-300"> Entrar com o Apple ID</button>
             </Link>
           </div>              
       </div>
