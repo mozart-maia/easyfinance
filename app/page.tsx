@@ -17,6 +17,8 @@ import {
   PointElement,
   LineElement,
 } from 'chart.js'
+import { ExitIcon } from '@radix-ui/react-icons'
+import Link from 'next/link'
 
 ChartJS.register(
   CategoryScale,
@@ -90,11 +92,11 @@ export default function EnhancedFinanceDashboard() {
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
       <aside className={`bg-white w-64 min-h-screen flex flex-col ${sidebarOpen ? 'block' : 'hidden'} md:block`}>
-        <div className="p-4 border-b">
-          <h2 className="text-2xl font-semibold text-gray-800">Finance App</h2>
+        <div className="p-4 border-b bg-slate-900 cursor-pointer">
+          <h2 className="text-2xl font-semibold text-white">Easy Finance</h2>
         </div>
         <nav className="flex-grow">
-          <ul className="p-4 space-y-2">
+          <ul className="p-4 space-y-6">
             <li>
               <Button variant="ghost" className="w-full justify-start">
                 <LayoutDashboard className="mr-2 h-4 w-4" />
@@ -119,6 +121,14 @@ export default function EnhancedFinanceDashboard() {
                 Transactions
               </Button>
             </li>
+            <li>
+              <Link href={"/login"}>
+              <Button variant="ghost" className="w-full text-red-600 justify-start" onClick={() => {}}>
+                <ExitIcon className="mr-2 h-4 w-4" />
+                Exit
+              </Button>
+              </Link>
+            </li>
           </ul>
         </nav>
       </aside>
@@ -131,7 +141,7 @@ export default function EnhancedFinanceDashboard() {
             <Button variant="ghost" className="md:hidden" onClick={() => setSidebarOpen(!sidebarOpen)}>
               <Menu className="h-6 w-6" />
             </Button>
-            <h1 className="text-2xl font-semibold text-gray-900">Finance Dashboard</h1>
+            <h1 className="text-2xl font-semibold text-gray-900">Dashboard</h1>
             <Button variant="ghost" size="icon" className="rounded-full">
               <img
                 src="https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg"
