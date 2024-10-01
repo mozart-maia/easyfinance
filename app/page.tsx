@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Bar, Pie, Line } from 'react-chartjs-2'
 import { ArrowDownIcon, ArrowUpIcon, DollarSign, CreditCard, Wallet, Activity, LayoutDashboard, PieChart, TrendingUp, Menu } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -19,6 +19,7 @@ import {
 } from 'chart.js'
 import { ExitIcon } from '@radix-ui/react-icons'
 import Link from 'next/link'
+import { list } from 'postcss'
 
 ChartJS.register(
   CategoryScale,
@@ -33,7 +34,42 @@ ChartJS.register(
 )
 
 export default function EnhancedFinanceDashboard() {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [expenseCategories, setExpenseCategories] = useState<any>({
+    labels: ['Housing', 'Food', 'Transportation', 'Utilities', 'Entertainment', 'Others'],
+    datasets: [
+      {
+        data: [0, 0, 0, 0, 0, 0],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.6)',
+          'rgba(54, 162, 235, 0.6)',
+          'rgba(255, 206, 86, 0.6)',
+          'rgba(75, 192, 192, 0.6)',
+          'rgba(153, 102, 255, 0.6)',
+          'rgba(255, 159, 64, 0.6)',
+        ],
+      },
+    ],
+  });
+  const [transactions, setTransactions] = useState<any>([]);
+  // const sidebarOpen = true;
+
+  useEffect(() => {
+    //TODO: add a try catch to capture errors when fecthing and show a toastbar to user
+    const fetchExpenseCategories = async () => {
+      const res = await fetch('/api/categories');
+      const data = await res.json();
+      setExpenseCategories(data);
+    };
+     fetchExpenseCategories();
+
+     const fetchTransactions = async () => {
+      const res = await fetch('/api/transactions');
+      const data = await res.json();
+      setTransactions(data);
+    };
+     fetchTransactions(); 
+  },[])
 
   const incomeVsExpenses = {
     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
@@ -51,22 +87,25 @@ export default function EnhancedFinanceDashboard() {
     ],
   }
 
-  const expenseCategories = {
-    labels: ['Housing', 'Food', 'Transportation', 'Utilities', 'Entertainment', 'Others'],
-    datasets: [
-      {
-        data: [1500, 500, 300, 200, 150, 350],
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.6)',
-          'rgba(54, 162, 235, 0.6)',
-          'rgba(255, 206, 86, 0.6)',
-          'rgba(75, 192, 192, 0.6)',
-          'rgba(153, 102, 255, 0.6)',
-          'rgba(255, 159, 64, 0.6)',
-        ],
-      },
-    ],
-  }
+  // const expenseCategories = {
+  //   labels: ['Housing', 'Food', 'Transportation', 'Utilities', 'Entertainment', 'Others'],
+  //   datasets: [
+  //     {
+  //       data: [1500, 500, 300, 200, 150, 350],
+  //       backgroundColor: [
+  //         'rgba(255, 99, 132, 0.6)',
+  //         'rgba(54, 162, 235, 0.6)',
+  //         'rgba(255, 206, 86, 0.6)',
+  //         'rgba(75, 192, 192, 0.6)',
+  //         'rgba(153, 102, 255, 0.6)',
+  //         'rgba(255, 159, 64, 0.6)',
+  //       ],
+  //     },
+  //   ],
+  // }
+
+  
+
 
   const expenseTrend = {
     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
@@ -80,13 +119,13 @@ export default function EnhancedFinanceDashboard() {
     ],
   }
 
-  const transactions = [
-    { id: 1, description: 'Salary', amount: 5000, type: 'income' },
-    { id: 2, description: 'Rent', amount: 1500, type: 'expense' },
-    { id: 3, description: 'Groceries', amount: 200, type: 'expense' },
-    { id: 4, description: 'Freelance Work', amount: 1000, type: 'income' },
-    { id: 5, description: 'Utilities', amount: 150, type: 'expense' },
-  ]
+  // const transactions = [
+  //   { id: 1, description: 'Salary', amount: 5000, type: 'income' },
+  //   { id: 2, description: 'Rent', amount: 1500, type: 'expense' },
+  //   { id: 3, description: 'Groceries', amount: 200, type: 'expense' },
+  //   { id: 4, description: 'Freelance Work', amount: 1000, type: 'income' },
+  //   { id: 5, description: 'Utilities', amount: 150, type: 'expense' },
+  // ]
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -236,7 +275,7 @@ export default function EnhancedFinanceDashboard() {
                 </CardHeader>
                 <CardContent>
                   <ul className="space-y-4">
-                    {transactions.map((transaction) => (
+                    {transactions.map((transaction: any) => (
                       <li key={transaction.id} className="flex items-center justify-between">
                         <div className="flex items-center space-x-4">
                           {transaction.type === 'income' ? (
