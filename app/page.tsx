@@ -137,36 +137,36 @@ export default function EnhancedFinanceDashboard() {
           <h2 className="text-2xl font-semibold text-white">Easy Finance</h2>
         </div>
         <nav className="flex-grow">
-          <ul className="p-5 space-y-10">
+          <ul className="p-5 space-y-8">
             <li>
-              <Button variant="ghost" className="w-full justify-start">
+              <Button variant="ghost" className="w-full text-lg justify-start">
                 <LayoutDashboard className="mr-2 h-4 w-4" />
                 Geral
               </Button>
             </li>
             <li>
-              <Button variant="ghost" className="w-full justify-start">
+              <Button variant="ghost" className="w-full text-lg justify-start">
                 <PieChart className="mr-2 h-4 w-4" />
                 Gastos
               </Button>
             </li>
             <li>
-              <Button variant="ghost" className="w-full justify-start">
+              <Button variant="ghost" className="w-full text-lg justify-start">
                 <TrendingUp className="mr-2 h-4 w-4" />
                 Renda
               </Button>
             </li>
             <li>
-              <Button variant="ghost" className="w-full justify-start">
+              <Button variant="ghost" className="w-full text-lg justify-start">
                 <CreditCard className="mr-2 h-4 w-4" />
                 Transaçôes
               </Button>
             </li>
             <li>
               <Link href={"/login"}>
-              <Button variant="ghost" className="w-full text-red-600 justify-start" onClick={() => {}}>
+              <Button variant="ghost" className="w-full text-lg text-red-600 justify-start" onClick={() => {}}>
                 <ExitIcon className="mr-2 h-4 w-4" />
-                Exit
+                Sair
               </Button>
               </Link>
             </li>

@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Afacad, Inter } from "next/font/google";
 import "./globals.css";
 import '@radix-ui/themes/styles.css';
-import { Theme } from "@radix-ui/themes";
+// import { Theme } from "@radix-ui/themes";
 import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
+const afacad = Afacad({subsets: ["latin"]})
 
 export const metadata: Metadata = {
   title: "Easy Finance",
@@ -18,10 +19,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="pt-br">
       <body className={inter.className}>
         <Toaster />
-        <Theme>{children}</Theme>
+        {/* <Theme> */}
+          {children}
+          {/* </Theme> */}
         </body>
     </html>
   );
