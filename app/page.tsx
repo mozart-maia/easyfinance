@@ -22,6 +22,7 @@ import Link from 'next/link'
 import { list } from 'postcss'
 import { toast } from '@/hooks/use-toast'
 import { ToastAction } from '@/components/ui/toast'
+import { getData } from './actions'
 
 ChartJS.register(
   CategoryScale,
@@ -139,7 +140,7 @@ export default function EnhancedFinanceDashboard() {
         <nav className="flex-grow">
           <ul className="p-5 space-y-8">
             <li>
-              <Button variant="ghost" className="w-full text-lg justify-start">
+              <Button variant="ghost" className="w-full text-lg justify-start" onClick={() => {const banco = getData(); banco.then(result => console.log(result))}}>
                 <LayoutDashboard className="mr-2 h-4 w-4" />
                 Geral
               </Button>
