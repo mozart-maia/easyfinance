@@ -182,7 +182,9 @@ export default function EnhancedFinanceDashboard() {
             <Button variant="ghost" className="md:hidden" onClick={() => setSidebarOpen(!sidebarOpen)}>
               <Menu className="h-6 w-6" />
             </Button>
+
             <h1 className="text-2xl font-semibold text-gray-900">Painel Geral</h1>
+
             <Button variant="ghost" size="icon" className="rounded-full" onClick={() => {
               toast({
                 variant: "destructive",
