@@ -20,6 +20,8 @@ import {
 import { ExitIcon } from '@radix-ui/react-icons'
 import Link from 'next/link'
 import { list } from 'postcss'
+import { toast } from '@/hooks/use-toast'
+import { ToastAction } from '@/components/ui/toast'
 
 ChartJS.register(
   CategoryScale,
@@ -72,15 +74,15 @@ export default function EnhancedFinanceDashboard() {
   },[])
 
   const incomeVsExpenses = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+    labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Maio', 'Jun'],
     datasets: [
       {
-        label: 'Income',
+        label: 'Renda',
         data: [1200, 1900, 3000, 5000, 2000, 3000],
         backgroundColor: 'rgba(75, 192, 192, 0.6)',
       },
       {
-        label: 'Expenses',
+        label: 'Gastos',
         data: [1000, 1700, 2200, 3500, 1800, 2500],
         backgroundColor: 'rgba(255, 99, 132, 0.6)',
       },
@@ -111,7 +113,7 @@ export default function EnhancedFinanceDashboard() {
     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
     datasets: [
       {
-        label: 'Expenses',
+        label: 'Gastos',
         data: [1000, 1700, 2200, 3500, 1800, 2500],
         borderColor: 'rgb(255, 99, 132)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
@@ -135,29 +137,29 @@ export default function EnhancedFinanceDashboard() {
           <h2 className="text-2xl font-semibold text-white">Easy Finance</h2>
         </div>
         <nav className="flex-grow">
-          <ul className="p-4 space-y-6">
+          <ul className="p-5 space-y-10">
             <li>
               <Button variant="ghost" className="w-full justify-start">
                 <LayoutDashboard className="mr-2 h-4 w-4" />
-                Dashboard
+                Geral
               </Button>
             </li>
             <li>
               <Button variant="ghost" className="w-full justify-start">
                 <PieChart className="mr-2 h-4 w-4" />
-                Expenses
+                Gastos
               </Button>
             </li>
             <li>
               <Button variant="ghost" className="w-full justify-start">
                 <TrendingUp className="mr-2 h-4 w-4" />
-                Income
+                Renda
               </Button>
             </li>
             <li>
               <Button variant="ghost" className="w-full justify-start">
                 <CreditCard className="mr-2 h-4 w-4" />
-                Transactions
+                Transaçôes
               </Button>
             </li>
             <li>
@@ -176,12 +178,19 @@ export default function EnhancedFinanceDashboard() {
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top Navigation */}
         <header className="bg-white shadow-sm">
-          <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+          <div className=" mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
             <Button variant="ghost" className="md:hidden" onClick={() => setSidebarOpen(!sidebarOpen)}>
               <Menu className="h-6 w-6" />
             </Button>
-            <h1 className="text-2xl font-semibold text-gray-900">Dashboard</h1>
-            <Button variant="ghost" size="icon" className="rounded-full">
+            <h1 className="text-2xl font-semibold text-gray-900">Painel Geral</h1>
+            <Button variant="ghost" size="icon" className="rounded-full" onClick={() => {
+              toast({
+                variant: "destructive",
+                title: "Teste toast",
+                description: "Isto é um toast...",                
+                action: <ToastAction altText='dismiss toast button' > Ok</ToastAction>
+              })
+            }}>
               <img
                 src="https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg"
                 width="32"
@@ -195,47 +204,47 @@ export default function EnhancedFinanceDashboard() {
 
         {/* Dashboard Content */}
         <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className=" mx-auto px-4 sm:px-6 lg:px-8 py-8">
             {/* Financial Overview Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Total Balance</CardTitle>
+                  <CardTitle className="text-sm font-medium">Saldo total</CardTitle>
                   <DollarSign className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">$12,750</div>
-                  <p className="text-xs text-muted-foreground">+2% from last month</p>
+                  <div className="text-2xl font-bold">{"R$ 12,750"}</div>
+                  <p className="text-xs text-muted-foreground">{"+2%"} desde último mês</p>
                 </CardContent>
               </Card>
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Income</CardTitle>
+                  <CardTitle className="text-sm font-medium">Renda</CardTitle>
                   <ArrowUpIcon className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">$7,500</div>
-                  <p className="text-xs text-muted-foreground">+5% from last month</p>
+                  <div className="text-2xl font-bold">{"R$ 7,500"}</div>
+                  <p className="text-xs text-muted-foreground">{"+5%"} desde último mês</p>
                 </CardContent>
               </Card>
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Expenses</CardTitle>
+                  <CardTitle className="text-sm font-medium">Gastos</CardTitle>
                   <ArrowDownIcon className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">$3,250</div>
-                  <p className="text-xs text-muted-foreground">-3% from last month</p>
+                  <div className="text-2xl font-bold">{"R$ 3,250"}</div>
+                  <p className="text-xs text-muted-foreground">{"-3%"} desde último mês</p>
                 </CardContent>
               </Card>
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Savings</CardTitle>
+                  <CardTitle className="text-sm font-medium">Poupança</CardTitle>
                   <Wallet className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">$2,000</div>
-                  <p className="text-xs text-muted-foreground">+8% from last month</p>
+                  <div className="text-2xl font-bold">{"R$ 2,000"}</div>
+                  <p className="text-xs text-muted-foreground">{"+8%"} desde último mês</p>
                 </CardContent>
               </Card>
             </div>
@@ -244,7 +253,7 @@ export default function EnhancedFinanceDashboard() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
               <Card>
                 <CardHeader>
-                  <CardTitle>Income vs Expenses</CardTitle>
+                  <CardTitle>Renda x Gastos</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <Bar data={incomeVsExpenses} options={{ responsive: true, maintainAspectRatio: false }} />
@@ -252,7 +261,7 @@ export default function EnhancedFinanceDashboard() {
               </Card>
               <Card>
                 <CardHeader>
-                  <CardTitle>Expense Categories</CardTitle>
+                  <CardTitle>Categorias de gastos</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <Pie data={expenseCategories} options={{ responsive: true, maintainAspectRatio: false }} />
@@ -263,7 +272,7 @@ export default function EnhancedFinanceDashboard() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
               <Card>
                 <CardHeader>
-                  <CardTitle>Expense Trend</CardTitle>
+                  <CardTitle>Histórico de gastos</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <Line data={expenseTrend} options={{ responsive: true, maintainAspectRatio: false }} />
@@ -271,7 +280,7 @@ export default function EnhancedFinanceDashboard() {
               </Card>
               <Card>
                 <CardHeader>
-                  <CardTitle>Recent Transactions</CardTitle>
+                  <CardTitle>Últimas Transações</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <ul className="space-y-4">
