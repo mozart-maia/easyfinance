@@ -7,7 +7,7 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
     const expenseCategories = {
-        labels: ['Housing', 'Food', 'Transportation', 'Utilities', 'Entertainment', 'Others'],
+        labels: ['Aluguel', 'Comida', 'Transporte', 'Saúde', 'Lazer', 'Diversos'],
         datasets: [
           {
             data: [1500, 500, 300, 200, 150, 350],
