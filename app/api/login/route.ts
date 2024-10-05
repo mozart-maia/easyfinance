@@ -3,39 +3,50 @@
 import prisma from '@/db';
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from "bcrypt";
+import { cookies } from 'next/headers';
+import jwt from 'jsonwebtoken';
+
 
 export async function POST(request: NextRequest) {
-   const { name, email, password } = await request.json();
+    const { email, password } = await request.json();
 
-   const saltRounds = 10;
+    const user = await prisma.user.findUnique({
+        where: {
+            email
+        }
+    });
 
-   let result = null;
 
-   await bcrypt.genSalt(saltRounds, async function(err, salt) {
+    const isSamePassword = await bcrypt.compare(password, user!.password);
 
-    if (err) {
-        return NextResponse.json({message: "Error when generating salt for password"});
+    if (isSamePassword) {
+        const tokenData = {
+            id: user?.id,
+            username: user?.name,
+            email: user?.email
+            }
+        const token = await jwt.sign(tokenData, "secret");
+        // cookies().set("LoginEF", token);
+        const response = NextResponse.json({
+            message: "Login successful",
+            success: true,
+            });
+            response.cookies.set("tokenEF", token, {
+                httpOnly: false,
+                secure: true,
+                maxAge: 60 * 60 * 24 * 7, // 1 semana
+                path: '/',
+                sameSite: 'none'
+            })
+            return response;
+
+    } else {
+        return NextResponse.json({message: "Error in authentication"});
     }
 
-    await bcrypt.hash(password, salt, async function(err, hash) {
+    
 
-        if (err) {
-            return NextResponse.json({message: "Error when creating hash for password"});
-        }
 
-        result = await prisma.user.create({
-            data: {
-                name,
-                email,
-                password: hash
-            }
-           })
-        console.log("result", result)
-        return NextResponse.json(result);
-    });
-});
-
-    return NextResponse.json({message: "Erro inesperado"});
   
 }
 

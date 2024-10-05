@@ -2,11 +2,22 @@ GET http://localhost:3000/api/users
 
 ###
 
+POST http://localhost:3000/api/create_login
+content-type: application/json
+
+{
+    "name": "jairo",
+    "password": "blessdasilva",
+    "email": "jairo@gmail.com"
+}
+
+
+###
+
 POST http://localhost:3000/api/login
 content-type: application/json
 
 {
-    "name": "joão",
-    "password": "outrasenha",
-    "email": "joão@gmail.com"
+    "email": "jairo@gmail.com",
+    "password": "blessdasilva"
 }

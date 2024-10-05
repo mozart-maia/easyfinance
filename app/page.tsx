@@ -22,7 +22,7 @@ import Link from 'next/link'
 import { list } from 'postcss'
 import { toast } from '@/hooks/use-toast'
 import { ToastAction } from '@/components/ui/toast'
-import { getData } from './actions'
+import { getData, getCookies } from './actions'
 
 ChartJS.register(
   CategoryScale,
@@ -55,7 +55,10 @@ export default function EnhancedFinanceDashboard() {
     ],
   });
   const [transactions, setTransactions] = useState<any>([]);
-  // const sidebarOpen = true;
+
+  function parseJwt (token:any) {
+    return JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
+}
 
   useEffect(() => {
     //TODO: add a try catch to capture errors when fecthing and show a toastbar to user
@@ -65,6 +68,15 @@ export default function EnhancedFinanceDashboard() {
       setExpenseCategories(data);
     };
      fetchExpenseCategories();
+
+     const getCk = async () => {
+      const cks = await getCookies();
+      console.log(cks);
+      // const result = qs.decode(`${cks?.value}`, "; ");
+      console.log("result", parseJwt(cks?.value));  
+     }
+
+     getCk()
 
      const fetchTransactions = async () => {
       const res = await fetch('/api/transactions');

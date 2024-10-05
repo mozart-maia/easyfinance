@@ -1,44 +1,57 @@
 "use client";
-import { useEffect, useState } from 'react'
+import { ReactElement, useEffect, useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-// import { Icons } from "@/components/ui/icons"
-import { DollarSign } from "lucide-react"
 import Image from 'next/image';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [imageList, setImageList] = useState<ReactElement[]>(
+    [<Image className="h-full w-full object-cover" key={1} width={500} height={500} src="/jocke-wulcan-qvn1lOKi45o-unsplash.jpg" alt="Empty glasses. Image of Jocke Wulcan in Unsplash" />,
+    <Image className="h-full w-full object-cover" key={2} width={500} height={500} src="/john-mcarthur-ROQzKIAdY78-unsplash.jpg" alt="Empty glasses. Image of Jocke Wulcan in Unsplash" />,
+    <Image className="h-full w-full object-cover" key={3} width={500} height={500} src="/kelvin-zyteng-LMq-rTluKfQ-unsplash.jpg" alt="Empty glasses. Image of Jocke Wulcan in Unsplash" />,
+    <Image className="h-full w-full object-cover" key={4} width={500} height={500} src="/optical-chemist-uz7dXgkdvkU-unsplash.jpg" alt="Empty glasses. Image of Jocke Wulcan in Unsplash" />,
+  ]);
+
   const [image, setImage] = useState<any>();
 
   useEffect(() => {
     const randomImage = () => {
       let randomNumber = Math.floor(Math.random() * 10);
-      let image;
       if (randomNumber === 1 || randomNumber === 2 || randomNumber === 9) {
-          image = <Image className="h-full w-full object-cover" width={500} height={500} src="/jocke-wulcan-qvn1lOKi45o-unsplash.jpg" alt="Empty glasses. Image of Jocke Wulcan in Unsplash" />;
+          setImage(imageList[0]);
       }
       if (randomNumber === 3 || randomNumber === 4 || randomNumber === 0) {
-          image = <Image className="h-full w-full object-cover" width={500} height={500} src="/john-mcarthur-ROQzKIAdY78-unsplash.jpg" alt="Empty glasses. Image of Jocke Wulcan in Unsplash" />;
+        setImage(imageList[1]);    
       }
       if (randomNumber === 5 || randomNumber === 6 || randomNumber === 10) {
-          image = <Image className="h-full w-full object-cover" width={500} height={500} src="/kelvin-zyteng-LMq-rTluKfQ-unsplash.jpg" alt="Empty glasses. Image of Jocke Wulcan in Unsplash" />;
+        setImage(imageList[2]);
       }
       if (randomNumber === 7 || randomNumber === 8) {
-          image = <Image className="h-full w-full object-cover" width={500} height={500} src="/optical-chemist-uz7dXgkdvkU-unsplash.jpg" alt="Empty glasses. Image of Jocke Wulcan in Unsplash" />;
+        setImage(imageList[3]);  
       }      
-
-      setImage(image);
     }
 
     randomImage();
   },[])
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Handle login logic here
-    console.log('Login attempted with:', email, password)
+  const handleSubmit = async () => {
+    //TODO ccolocar try catch e criar pagina alternativa para cadastro de usuario
+    const res = await fetch('/api/login', {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    });
+    
+    const data = res.json();
+
   }
 
   return (
@@ -46,7 +59,6 @@ export default function LoginPage() {
       {/* Header */}
       <header className="bg-slate-900 text-primary-foreground p-4 flex items-center justify-center lg:justify-start">
         <div className="flex items-center max-w-7xl w-full">
-          {/* <DollarSign className="h-8 w-8 mr-2" /> */}
           <h1 className="text-3xl font-bold">Easy Finance</h1>
         </div>
       </header>
@@ -61,13 +73,11 @@ export default function LoginPage() {
               <h2 className="text-3xl font-extrabold tracking-tight text-slate-900">Acesse a plataforma</h2>
               <p className="text-sm text-gray-500">
               Faça login para acessar suas ferramentas de controle financeiro e manter suas finanças em dia
-                {/* <p  className="font-small text-primary hover:underline">
-                
-                </p> */}
+  
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+            <form className="mt-8 space-y-6">
               <div className="space-y-4">
                 <div>
                   <Label htmlFor="email" className="sr-only">
@@ -123,7 +133,7 @@ export default function LoginPage() {
                 </div>
               </div>
 
-              <Button type="submit" className="w-full bg-blue-950" >
+              <Button type="button" className="w-full bg-blue-950" onClick={() => handleSubmit()}>
                 Acessar
               </Button>
             </form>
@@ -140,11 +150,11 @@ export default function LoginPage() {
 
               <div className="mt-6 grid grid-cols-2 gap-3">
                 <Button variant="outline" className="w-full">
-                  {/* <Icons.google className="mr-2 h-4 w-4" /> */}
+
                   Google
                 </Button>
                 <Button variant="outline" className="w-full">
-                  {/* <Icons.apple className="mr-2 h-4 w-4" /> */}
+
                   Apple ID
                 </Button>
               </div>
@@ -153,11 +163,6 @@ export default function LoginPage() {
         </div>
         {/* Left side - Image */}
         <div className="hidden w-1/2 bg-gray-100 lg:block">
-          {/* <img
-            src="jocke-wulcan-qvn1lOKi45o-unsplash.jpg"
-            alt="Login visual"
-            className="h-full w-full object-cover"
-          /> */}
           {image}
         </div>
       </div>
