@@ -10,6 +10,15 @@ export async function getData() {
     return data;
 }
 
-export async function getCookies() {
-    return cookies().get("tokenEF");
+function parseJwt (token:string) {
+    return JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
+}
+
+export async function getJwtInfo() {
+
+    const cks = await cookies().get("tokenEF");
+    if (cks) {
+        return parseJwt(cks!.value);
+    }
+    return null;    
 }

@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { Bar, Pie, Line } from 'react-chartjs-2'
 import { ArrowDownIcon, ArrowUpIcon, DollarSign, CreditCard, Wallet, Activity, LayoutDashboard, PieChart, TrendingUp, Menu } from 'lucide-react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import {
   Chart as ChartJS,
@@ -21,7 +21,8 @@ import { ExitIcon } from '@radix-ui/react-icons'
 import Link from 'next/link'
 import { toast } from '@/hooks/use-toast'
 import { ToastAction } from '@/components/ui/toast'
-import { getData, getCookies } from './actions'
+import { getData, getJwtInfo } from './actions'
+import { useRouter } from 'next/navigation'
 
 ChartJS.register(
   CategoryScale,
@@ -37,7 +38,7 @@ ChartJS.register(
 
 export default function EnhancedFinanceDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [cookies, setCookies] = useState<any>();
+  const [userInfo, setUserInfo] = useState<any>(null);
   const [expenseCategories, setExpenseCategories] = useState<any>({
     labels: ['Housing', 'Food', 'Transportation', 'Utilities', 'Entertainment', 'Others'],
     datasets: [
@@ -55,10 +56,8 @@ export default function EnhancedFinanceDashboard() {
     ],
   });
   const [transactions, setTransactions] = useState<any>([]);
+  const router = useRouter();
 
-  function parseJwt (token:any) {
-    return JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
-}
 
   useEffect(() => {
     //TODO: add a try catch to capture errors when fecthing and show a toastbar to user
@@ -67,24 +66,53 @@ export default function EnhancedFinanceDashboard() {
       const data = await res.json();
       setExpenseCategories(data);
     };
-     fetchExpenseCategories();
+
+    try {
+      fetchExpenseCategories();
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Erro ao buscar categorias",
+        description: "",                
+        action: <ToastAction altText='dismiss toast button' > Ok</ToastAction>
+      })
+      console.error("Error at fetchExpenseCategories: ", error);
+    }
+     
 
      const getCk = async () => {
-      const cks = await getCookies();
-      console.log(cks);
-      // const result = qs.decode(`${cks?.value}`, "; ");
-      setCookies(parseJwt(cks?.value))
-      console.log("result", cookies);  
+      const info = await getJwtInfo();
+      if (info) {
+        setUserInfo(info);
+      } else {
+        router.push("/login");
+      }      
      }
+     try {
+      getCk() 
+     } catch (error) {
 
-     getCk()
+      console.error("Error at getting cookies")
+     }
 
      const fetchTransactions = async () => {
       const res = await fetch('/api/transactions');
       const data = await res.json();
       setTransactions(data);
     };
-     fetchTransactions(); 
+
+    try {
+      fetchTransactions();
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Erro ao buscar transações",
+        description: "",                
+        action: <ToastAction altText='dismiss toast button' > Ok</ToastAction>
+      })
+      console.error("Error at fetchTransactions: ", error);
+    }
+      
   },[])
 
   const incomeVsExpenses = {
@@ -103,26 +131,6 @@ export default function EnhancedFinanceDashboard() {
     ],
   }
 
-  // const expenseCategories = {
-  //   labels: ['Housing', 'Food', 'Transportation', 'Utilities', 'Entertainment', 'Others'],
-  //   datasets: [
-  //     {
-  //       data: [1500, 500, 300, 200, 150, 350],
-  //       backgroundColor: [
-  //         'rgba(255, 99, 132, 0.6)',
-  //         'rgba(54, 162, 235, 0.6)',
-  //         'rgba(255, 206, 86, 0.6)',
-  //         'rgba(75, 192, 192, 0.6)',
-  //         'rgba(153, 102, 255, 0.6)',
-  //         'rgba(255, 159, 64, 0.6)',
-  //       ],
-  //     },
-  //   ],
-  // }
-
-  
-
-
   const expenseTrend = {
     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
     datasets: [
@@ -134,14 +142,6 @@ export default function EnhancedFinanceDashboard() {
       },
     ],
   }
-
-  // const transactions = [
-  //   { id: 1, description: 'Salary', amount: 5000, type: 'income' },
-  //   { id: 2, description: 'Rent', amount: 1500, type: 'expense' },
-  //   { id: 3, description: 'Groceries', amount: 200, type: 'expense' },
-  //   { id: 4, description: 'Freelance Work', amount: 1000, type: 'income' },
-  //   { id: 5, description: 'Utilities', amount: 150, type: 'expense' },
-  // ]
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -202,9 +202,9 @@ export default function EnhancedFinanceDashboard() {
             <div>
             <Button variant="ghost" size="icon" className="rounded-full" onClick={() => {
               toast({
-                variant: "destructive",
-                title: "Teste toast",
-                description: "Isto é um toast...",                
+                variant: "default",
+                title: "Informações do usuário",
+                description: `Nome: ${userInfo.username} | email: ${userInfo.email}`,                
                 action: <ToastAction altText='dismiss toast button' > Ok</ToastAction>
               })
             }}>
@@ -216,7 +216,7 @@ export default function EnhancedFinanceDashboard() {
                 alt="User avatar"
               />
             </Button>
-            <span className="text-xl font-semibold text-gray-900 m-1 mb-2" >{cookies?.username || "User"}</span>
+            <span className="text-xl font-semibold text-gray-900 m-1 mb-2" >{userInfo?.username || "User"}</span>
             </div>
             
           </div>
