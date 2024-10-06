@@ -19,7 +19,6 @@ import {
 } from 'chart.js'
 import { ExitIcon } from '@radix-ui/react-icons'
 import Link from 'next/link'
-import { list } from 'postcss'
 import { toast } from '@/hooks/use-toast'
 import { ToastAction } from '@/components/ui/toast'
 import { getData, getCookies } from './actions'
@@ -38,6 +37,7 @@ ChartJS.register(
 
 export default function EnhancedFinanceDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [cookies, setCookies] = useState<any>();
   const [expenseCategories, setExpenseCategories] = useState<any>({
     labels: ['Housing', 'Food', 'Transportation', 'Utilities', 'Entertainment', 'Others'],
     datasets: [
@@ -73,7 +73,8 @@ export default function EnhancedFinanceDashboard() {
       const cks = await getCookies();
       console.log(cks);
       // const result = qs.decode(`${cks?.value}`, "; ");
-      console.log("result", parseJwt(cks?.value));  
+      setCookies(parseJwt(cks?.value))
+      console.log("result", cookies);  
      }
 
      getCk()
@@ -198,6 +199,7 @@ export default function EnhancedFinanceDashboard() {
 
             <h1 className="text-2xl font-semibold text-gray-900">Painel Geral</h1>
 
+            <div>
             <Button variant="ghost" size="icon" className="rounded-full" onClick={() => {
               toast({
                 variant: "destructive",
@@ -214,6 +216,9 @@ export default function EnhancedFinanceDashboard() {
                 alt="User avatar"
               />
             </Button>
+            <span className="text-xl font-semibold text-gray-900 m-1 mb-2" >{cookies?.username || "User"}</span>
+            </div>
+            
           </div>
         </header>
 

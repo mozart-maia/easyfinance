@@ -3,7 +3,6 @@
 import prisma from '@/db';
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from "bcrypt";
-import { cookies } from 'next/headers';
 import jwt from 'jsonwebtoken';
 
 
@@ -16,7 +15,6 @@ export async function POST(request: NextRequest) {
         }
     });
 
-
     const isSamePassword = await bcrypt.compare(password, user!.password);
 
     if (isSamePassword) {
@@ -25,8 +23,8 @@ export async function POST(request: NextRequest) {
             username: user?.name,
             email: user?.email
             }
-        const token = await jwt.sign(tokenData, "secret");
-        // cookies().set("LoginEF", token);
+        const secret =  process.env.JWT_SECRET || "abcd"
+        const token = await jwt.sign(tokenData, secret);
         const response = NextResponse.json({
             message: "Login successful",
             success: true,
@@ -42,12 +40,7 @@ export async function POST(request: NextRequest) {
 
     } else {
         return NextResponse.json({message: "Error in authentication"});
-    }
-
-    
-
-
-  
+    }  
 }
 
 export async function GET(request: NextRequest){

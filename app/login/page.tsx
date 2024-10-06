@@ -4,8 +4,12 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Image from 'next/image';
+import { toast } from '@/hooks/use-toast';
+import { ToastAction } from '@/components/ui/toast';
+import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
+  const router = useRouter();
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [imageList, setImageList] = useState<ReactElement[]>(
@@ -16,6 +20,7 @@ export default function LoginPage() {
   ]);
 
   const [image, setImage] = useState<any>();
+
 
   useEffect(() => {
     const randomImage = () => {
@@ -37,20 +42,43 @@ export default function LoginPage() {
     randomImage();
   },[])
 
-  const handleSubmit = async () => {
-    //TODO ccolocar try catch e criar pagina alternativa para cadastro de usuario
-    const res = await fetch('/api/login', {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email,
-        password,
-      }),
-    });
+  const handleSubmit = async (e: any) => {
+    e.preventDefault()
     
-    const data = res.json();
+    //TODO colocar try catch e criar pagina alternativa para cadastro de usuario
+    try {
+      const res = await fetch('/api/login', {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+      
+      const data = await res.json();
+      console.log(data);
+      toast({
+        title: "Sucesso",
+        description: `Login efetuado com sucesso`,                
+        action: <ToastAction altText='dismiss toast button'>Ok</ToastAction>
+      })
+      
+      router.push("/");
+
+
+
+    } catch (error) {
+      console.error("Error at login: ", error);
+      toast({
+        variant: "destructive",
+        title: "Erro",
+        description: "Erro ao efetuar login",                
+        action: <ToastAction altText='dismiss toast button' >Ok</ToastAction>
+      })
+    } 
 
   }
 
@@ -77,7 +105,7 @@ export default function LoginPage() {
               </p>
             </div>
 
-            <form className="mt-8 space-y-6">
+            <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
               <div className="space-y-4">
                 <div>
                   <Label htmlFor="email" className="sr-only">
@@ -133,7 +161,7 @@ export default function LoginPage() {
                 </div>
               </div>
 
-              <Button type="button" className="w-full bg-blue-950" onClick={() => handleSubmit()}>
+              <Button type="submit" className="w-full bg-blue-950" onClick={() => {}}>
                 Acessar
               </Button>
             </form>
