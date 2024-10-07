@@ -32,7 +32,7 @@ import { ExitIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { toast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
-import { getData, getJwtInfo } from "./actions";
+import { getData, getJwtInfo, removeCookie } from "./actions";
 import { useRouter } from "next/navigation";
 
 ChartJS.register(
@@ -70,7 +70,20 @@ export default function EnhancedFinanceDashboard() {
   const router = useRouter();
 
   useEffect(() => {
-    //TODO: add a try catch to capture errors when fecthing and show a toastbar to user
+    const getCk = async () => {
+      const info = await getJwtInfo();
+      if (info) {
+        setUserInfo(info);
+      } else {
+        router.push("/login");
+      }
+    };
+    try {
+      getCk();
+    } catch (error) {
+      console.error("Error at getting cookies");
+    }
+
     const fetchExpenseCategories = async () => {
       const res = await fetch("/api/categories");
       const data = await res.json();
@@ -87,20 +100,6 @@ export default function EnhancedFinanceDashboard() {
         action: <ToastAction altText="dismiss toast button"> Ok</ToastAction>,
       });
       console.error("Error at fetchExpenseCategories: ", error);
-    }
-
-    const getCk = async () => {
-      const info = await getJwtInfo();
-      if (info) {
-        setUserInfo(info);
-      } else {
-        router.push("/login");
-      }
-    };
-    try {
-      getCk();
-    } catch (error) {
-      console.error("Error at getting cookies");
     }
 
     const fetchTransactions = async () => {
@@ -197,7 +196,20 @@ export default function EnhancedFinanceDashboard() {
                 <Button
                   variant="ghost"
                   className="w-full text-lg text-red-600 justify-start"
-                  onClick={() => {}}
+                  onClick={async () => {
+                    if (await removeCookie()) {
+                      router.push("login");
+                    } else {
+                      toast({
+                        variant: "destructive",
+                        title: "Erro ao deslogar",
+                        description: "Por favor tente novamente",
+                        action: (
+                          <ToastAction altText="dismiss toast button"> Ok</ToastAction>
+                        ),
+                      });
+                    }
+                  }}
                 >
                   <ExitIcon className="mr-2 h-4 w-4" />
                   Sair

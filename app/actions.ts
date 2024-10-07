@@ -21,3 +21,13 @@ export async function getJwtInfo() {
   }
   return null;
 }
+
+export async function removeCookie() {
+  try {
+    await cookies().delete("tokenEF");
+    return true;
+  } catch (error) {
+    console.error("Error at removeCookies(): ", error);
+    return false;
+  }
+}
