@@ -72,7 +72,7 @@ export default function LoginPage() {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    //TODO colocar try catch e criar pagina alternativa para cadastro de usuario
+    //TODO criar pagina alternativa para cadastro de usuario
     try {
       const res = await fetch("/api/login", {
         method: "POST",

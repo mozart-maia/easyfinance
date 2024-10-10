@@ -22,8 +22,8 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(result);
   } catch (error) {
-    console.log("Error at creating login: ", error);
-    return NextResponse.json({ message: "Unwaited error" });
+    console.error("Error at creating login: ", error);
+    return NextResponse.json({ message: "unexpected error at creating login" });
   }
 }
 

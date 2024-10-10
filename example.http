@@ -21,3 +21,54 @@ content-type: application/json
     "email": "jairo@gmail.com",
     "password": "blessdasilva"
 }
+
+###
+
+POST http://localhost:3000/api/categories
+content-type: application/json
+
+{
+    "name": "Lazer",
+    "description": "Cinema, lanches, praia...",
+    "userId": "bf196738-1f45-4595-b98b-e3197452c199"
+}
+
+###
+
+GET http://localhost:3000/api/categories?userid=bf196738-1f45-4595-b98b-e3197452c199
+content-type: application/json
+
+###
+
+POST http://localhost:3000/api/expenses
+content-type: application/json
+
+{
+    "value": 15.99,
+    "date": "2001-01-01T03:00:00.000Z",
+    "userId": "bf196738-1f45-4595-b98b-e3197452c199",
+    "categoryId": 1
+}
+
+###
+
+GET http://localhost:3000/api/expenses?userid=bf196738-1f45-4595-b98b-e3197452c199
+content-type: application/json
+
+
+###
+
+POST http://localhost:3000/api/incomes
+content-type: application/json
+
+{
+    "value": 23.59,
+    "date": "2001-01-01T03:00:00.000Z",
+    "userId": "bf196738-1f45-4595-b98b-e3197452c199",
+    "categoryId": 1
+}
+
+###
+
+GET http://localhost:3000/api/incomes?userid=bf196738-1f45-4595-b98b-e3197452c199
+content-type: application/json
