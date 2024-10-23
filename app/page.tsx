@@ -32,7 +32,7 @@ import { ExitIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { toast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
-import { getData, getJwtInfo, removeCookie } from "./actions";
+import { getJwtInfo, removeCookie } from "./actions";
 import { useRouter } from "next/navigation";
 
 ChartJS.register(
@@ -164,29 +164,44 @@ export default function EnhancedFinanceDashboard() {
               <Button
                 variant="ghost"
                 className="w-full text-lg justify-start"
-                onClick={() => {
-                  const banco = getData();
-                  banco.then(result => console.log(result));
-                }}
+                onClick={() => {}}
               >
                 <LayoutDashboard className="mr-2 h-4 w-4" />
                 Geral
               </Button>
             </li>
             <li>
-              <Button variant="ghost" className="w-full text-lg justify-start">
+              <Button
+                variant="ghost"
+                className="w-full text-lg justify-start"
+                onClick={() => {
+                  router.push("/gastos");
+                }}
+              >
                 <PieChart className="mr-2 h-4 w-4" />
                 Gastos
               </Button>
             </li>
             <li>
-              <Button variant="ghost" className="w-full text-lg justify-start">
+              <Button
+                variant="ghost"
+                className="w-full text-lg justify-start"
+                onClick={() => {
+                  router.push("/renda");
+                }}
+              >
                 <TrendingUp className="mr-2 h-4 w-4" />
                 Renda
               </Button>
             </li>
             <li>
-              <Button variant="ghost" className="w-full text-lg justify-start">
+              <Button
+                variant="ghost"
+                className="w-full text-lg justify-start"
+                onClick={() => {
+                  router.push("/transacoes");
+                }}
+              >
                 <CreditCard className="mr-2 h-4 w-4" />
                 Transaçôes
               </Button>
