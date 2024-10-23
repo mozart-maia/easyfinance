@@ -141,7 +141,7 @@ export default function EnhancedFinanceDashboard() {
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top Navigation */}
         <header className="bg-white shadow-sm">
-          <div className=" mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+          <div className=" mx-auto py-3 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
             <Button
               variant="ghost"
               className="md:hidden"
