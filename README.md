@@ -1,4 +1,11 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This is a project made with NextJS, with integration with NeonDB (an online Postgres database) using Prisma as ORM. You can view it at the following link: [easyfinance-two.vercel.app](easyfinance-two.vercel.app) . I used some Radix UI and Shadcn components and ChartJS for the graphs. 
+
+## Screens:
+
+![image](https://github.com/user-attachments/assets/f65d74aa-0bc1-4bb6-8425-8d98f3167aa6)
+
+![image](https://github.com/user-attachments/assets/9553f962-31e7-4f91-8be8-f7ea2fdffd51)
+
 
 ## Getting Started
 
